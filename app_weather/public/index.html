@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather Wardrobe</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Weather Wardrobe</h1>
+
+  <form id="suggestion-form">
+    <label>
+      City
+      <input type="text" id="city" name="city" placeholder="e.g. Tokyo" required />
+    </label>
+    <label>
+      Clothing preference
+      <input type="text" id="clothingPreference" name="clothingPreference" placeholder="e.g. casual" required />
+    </label>
+    <button type="submit">Get suggestions</button>
+  </form>
+
+  <p id="status"></p>
+
+  <section id="results" hidden>
+    <p id="weather-summary"></p>
+    <p id="rationale"></p>
+    <div id="image-grid" class="image-grid"></div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+    "hooks": {
+      "PostToolUse": [
+        {
+          "matcher": "wardrobe.js",
+          "command": "node test-wardrobe-hook.mjs"
+        }
+      ]
+    }
+}
