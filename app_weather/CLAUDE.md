@@ -38,3 +38,14 @@ Unsplash. One endpoint: `POST /api/suggestions`.
   Each is a separate Unsplash search. This order never changes.
 - UI must be responsive: desktop shows 4 images in a row, 
   tablet 2x2 grid, mobile 1 column.
+
+
+# Skill: UI Standards
+
+When building any UI, I will:
+
+1. Make it fully responsive using industry-standard breakpoints.
+2. Ensure the layout looks clean and organized on all screen sizes.
+3. Use a minimal, modern visual style — no unnecessary decorations.
+4. Apply consistent spacing and typography throughout.
+5. Present the result and wait for feedback before moving on.
