@@ -35,7 +35,7 @@ You will need your own postgres database for this project. If you don't have one
 
 ### Environment Variables
 
-Create a `.env` file in the `server/` directory with DATABASE_URL and GEMINI_API_KEY
+Create a `.env` file in the `server/` directory with DATABASE_URL and OPEN_AI_KEY
 (or your preferred LLM)
 
 - The database must be **Postgres with pgvector** (local or Supabase)
@@ -81,26 +81,15 @@ following data:
 
 ### LLM via API
 
-You will also need API access to an LLM. You can use any you like, but if you
-want something for free (with rate limiting), you can use Google's Gemini
+This project uses OpenAI for both chat completions and embeddings.
 
-- Here is a simple guide to setting it up:
-  https://ai.google.dev/gemini-api/docs/quickstart#javascript
-- You will need an API key which you can get for free here:
-  https://aistudio.google.com/app/apikey?
-  - Press the `Create API Key` button on the top right
-- **Note** as per the Gemini documentation, you can reduce token usage (hence
-  increase your rate limit) by disabling thinking. For this project, it's safe
-  to turn thinking off.
-  - To turn thinking off, add the following to your API request:
-
-```
-    config: {
-      thinkingConfig: {
-        thinkingBudget: 0, // Disables thinking
-      },
-    }
-```
+- API key env var: `OPEN_AI_KEY` (set in `server/.env`)
+- Get a key here: https://platform.openai.com/api-keys
+- Embeddings: use the [OpenAI Embeddings API](https://platform.openai.com/docs/guides/embeddings)
+  (e.g. `text-embedding-3-small`, 1536 dimensions) to embed chunks and the user
+  question — store results in the `embeddings_1536` column of `knowledge_base`
+- Chat: use the [Chat Completions API](https://platform.openai.com/docs/guides/text-generation)
+  to generate answers from retrieved chunks
 
 ---
 
