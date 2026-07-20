@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PDFParse } from 'pdf-parse';
+import { PDF_FILES, ARTICLE_IDS, SLACK_CHANNELS } from '../config/constants';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,59 +35,57 @@ const fetchWithRetry = async (
   throw new Error(`Request to ${url} failed after ${retries} retries`);
 };
 
-const PDF_FILES = [
-  'OpEd - A Revolution at Our Feet.pdf',
-  'Research Paper - Gravitational Reversal Physics.pdf',
-  'White Paper - The Development of Localized Gravity Reversal Technology.pdf',
-];
+export const fetchPdfText = async (fileName: string): Promise<string> => {
+  const filePath = path.join(__dirname, '../knowledge_pdfs', fileName);
+  const buffer = await readFile(filePath);
+  const parser = new PDFParse({ data: buffer });
+  const result = await parser.getText();
+  await parser.destroy();
+
+  return result.text;
+};
 
 export const loadPdfDocuments = async (): Promise<RawDocument[]> => {
   const documents: RawDocument[] = [];
 
   for (const fileName of PDF_FILES) {
-    const filePath = path.join(__dirname, '../knowledge_pdfs', fileName);
-    const buffer = await readFile(filePath);
-    const parser = new PDFParse({ data: buffer });
-    const result = await parser.getText();
-    await parser.destroy();
+    const text = await fetchPdfText(fileName);
 
     documents.push({
       source: 'pdf',
       sourceId: fileName.replace(/\.pdf$/i, ''),
-      text: result.text,
+      text,
     });
   }
 
   return documents;
 };
 
-const ARTICLE_IDS = [
-  'military-deployment-report',
-  'urban-commuting',
-  'hover-polo',
-  'warehousing',
-  'consumer-safety',
-];
-
 const ARTICLE_BASE_URL =
   'https://gist.githubusercontent.com/JonaCodes/394d01021d1be03c9fe98cd9696f5cf3/raw';
+
+export const fetchArticleText = async (articleId: string): Promise<string> => {
+  const index = ARTICLE_IDS.indexOf(articleId);
+  if (index === -1) {
+    throw new Error(`Unknown article id: ${articleId}`);
+  }
+
+  const url = `${ARTICLE_BASE_URL}/article-${index + 1}_${articleId}.md`;
+  const response = await fetchWithRetry(url);
+  return response.text();
+};
 
 export const loadArticleDocuments = async (): Promise<RawDocument[]> => {
   const documents: RawDocument[] = [];
 
-  for (let i = 0; i < ARTICLE_IDS.length; i++) {
-    const articleId = ARTICLE_IDS[i];
-    const url = `${ARTICLE_BASE_URL}/article-${i + 1}_${articleId}.md`;
-    const response = await fetchWithRetry(url);
-    const text = await response.text();
-
+  for (const articleId of ARTICLE_IDS) {
+    const text = await fetchArticleText(articleId);
     documents.push({ source: 'article', sourceId: articleId, text });
   }
 
   return documents;
 };
 
-const SLACK_CHANNELS = ['lab-notes', 'engineering', 'offtopic'];
 const SLACK_BASE_URL = 'https://lev-boots-slack-api.jona-581.workers.dev/';
 
 interface SlackMessage {
