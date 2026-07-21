@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import './loadEnv';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';

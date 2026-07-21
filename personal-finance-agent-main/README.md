@@ -1,12 +1,10 @@
 # Running the Project
 
 - Run `npm i` in both root and `/server` directories
-- Create a `.env` file in `/server` with your Gemini API key: `GOOGLE_GENERATIVE_AI_API_KEY=your_key_here`
-  - Get a free API key from: https://aistudio.google.com/app/apikey
+- Create a `.env` file in the project root with your OpenAI API key: `OPEN_AI_KEY=your_key_here`
+  - Get an API key from: https://platform.openai.com/api-keys
 - Run `npm run dev` from root - runs frontend and backend concurrently with HMR
 - Open [http://localhost:5173/](http://localhost:5173/)
-
-**Note:** Use `GOOGLE_GENERATIVE_AI_API_KEY` not `GEMINI_API_KEY` (AI SDK requirement)
 
 ---
 
@@ -71,7 +69,7 @@ export const tools = {
 Then you can pass all your tools using vercel's SDK easily:
 ```js
 const result = await generateText({
-  model: google('gemini-2.5-flash'),
+  model: openai('gpt-4o-mini'),
   messages: [...],
   tools // <-- now the agent knows which tools are available to it, but it *won't* run them for you
 });

@@ -1,9 +1,6 @@
-import dotenv from 'dotenv';
 import { FinanceAgent } from '../agent';
 import { loadExpensesFromCSV } from '../utils/csv-loader';
 import showdown from 'showdown';
-
-dotenv.config();
 
 const expenses = loadExpensesFromCSV('server/expenses_data/expenses_2024-2025.csv');
 const agent = new FinanceAgent(expenses);
