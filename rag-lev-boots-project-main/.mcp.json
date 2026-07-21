@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "lev-boots-rag": {
+      "type": "stdio",
+      "command": "bash",
+      "args": [
+        "-c",
+        "cd '/Users/eliyashlomo/Documents/learning_backend/ai_learning/rag-lev-boots-project-main/server' && npx tsx mcp/server.ts"
+      ],
+      "env": {}
+    }
+  }
+}
